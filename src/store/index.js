@@ -1,8 +1,8 @@
 import {configureStore} from '@reduxjs/toolkit';
-import jobs from './reducers/jobsSlice';
+import home from './reducers/homeSlice';
 
 export default configureStore({
   reducer: {
-    jobs,
+    home,
   },
 });

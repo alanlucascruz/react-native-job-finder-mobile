@@ -15,10 +15,10 @@ export default () => {
       </LinearGradient>
 
       <View style={styles.content}>
-        {/* <Image
+        <Image
           style={styles.avatarImage}
-          source={require('../../../assets/img/avatar.png')}
-        /> */}
+          source={require('../../../assets/img/no-avatar.png')}
+        />
         <Text style={styles.textName}>Alan Cruz</Text>
         <Text style={styles.textEmail}>alanlucascruz@gmail.com</Text>
       </View>

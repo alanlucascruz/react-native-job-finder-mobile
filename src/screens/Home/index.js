@@ -3,15 +3,16 @@ import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../../styles';
 import MoreJobs from './Components/MoreJobs';
-import {getJobsRequest} from '../../store/reducers/jobsSlice';
+import {getJobsRequest} from '../../store/reducers/homeSlice';
 import {Loading} from '../../components';
 
 export default () => {
   const dispatch = useDispatch();
-  const {status} = useSelector(state => state.jobs);
+
+  const {status} = useSelector(state => state.home);
 
   useEffect(() => {
-    dispatch(getJobsRequest('loading', ''));
+    dispatch(getJobsRequest('loading'));
   }, []);
 
   if (status === 'loading') return <Loading />;

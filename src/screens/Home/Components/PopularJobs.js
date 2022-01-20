@@ -17,7 +17,7 @@ import {Config} from '../../../core';
 export default () => {
   const navigation = useNavigation();
 
-  const {data} = useSelector(state => state.jobs);
+  const {data} = useSelector(state => state.home);
 
   const dataFiltered = data.slice(0, 4);
 

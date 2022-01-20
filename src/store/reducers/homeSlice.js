@@ -1,8 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {Api} from '../../core';
 
-export const getJobsRequest = (status, filter) => async dispatch => {
+export const getJobsRequest = status => async (dispatch, getState) => {
   try {
+    const {filter} = getState().home;
+
     dispatch(setStatus(status));
 
     const route = filter ? `/vagas/find/${filter}` : '/vagas';
@@ -16,11 +18,12 @@ export const getJobsRequest = (status, filter) => async dispatch => {
   }
 };
 
-export const jobs = createSlice({
-  name: 'jobs',
+export const home = createSlice({
+  name: 'home',
   initialState: {
     data: [],
     status: 'loading', // loading, refreshing, succeeded, failed
+    filter: '',
   },
   reducers: {
     getJobsSuccess: (state, action) => {
@@ -29,9 +32,12 @@ export const jobs = createSlice({
     setStatus: (state, action) => {
       state.status = action.payload;
     },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
   },
 });
 
-export const {getJobsSuccess, setStatus} = jobs.actions;
+export const {getJobsSuccess, setStatus, setFilter} = home.actions;
 
-export default jobs.reducer;
+export default home.reducer;

@@ -20,7 +20,7 @@ export default () => (
         placeholder="Encontre sua vaga agora"
       />
       <TouchableOpacity style={styles.button} activeOpacity={0.7}>
-        <Icon name="tune" color={Colors.light} size={28} />
+        <Icon name="search" color={Colors.light} size={28} />
       </TouchableOpacity>
     </View>
   </View>

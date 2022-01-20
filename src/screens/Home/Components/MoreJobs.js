@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useCallback, useMemo} from 'react';
 import {
   FlatList,
   View,
@@ -9,23 +9,35 @@ import {
   Image,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {getJobsRequest} from '../../../store/reducers/jobsSlice';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Colors} from '../../../styles';
+import {getJobsRequest} from '../../../store/reducers/homeSlice';
 import {Config} from '../../../core';
+import {Colors} from '../../../styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import Search from './Search';
 import PopularJobs from './PopularJobs';
+
+const headerComponent = () => (
+  <Fragment>
+    <View style={styles.titleContainer}>
+      <Text style={styles.title}>Olá Alan,</Text>
+      <Text style={styles.title}>Inicie sua nova jornada</Text>
+    </View>
+
+    <PopularJobs />
+
+    <Text style={styles.subTitle}>Mais vagas</Text>
+  </Fragment>
+);
 
 export default () => {
   const dispatch = useDispatch();
 
-  const {data, status} = useSelector(state => state.jobs);
+  const {data, status} = useSelector(state => state.home);
 
   const dataFiltered = data.slice(4);
 
   const onRefresh = () => {
-    dispatch(getJobsRequest('refreshing', ''));
+    dispatch(getJobsRequest('refreshing'));
   };
 
   const JobImage = ({image}) => {
@@ -37,14 +49,6 @@ export default () => {
 
     return <Image style={styles.cardImage} source={source} />;
   };
-
-  const headerComponent = () => (
-    <Fragment>
-      <Search />
-      <PopularJobs />
-      <Text style={styles.title}>Mais vagas</Text>
-    </Fragment>
-  );
 
   const renderItem = ({item}) => {
     return (
@@ -88,7 +92,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  titleContainer: {
+    paddingHorizontal: 24,
+    marginTop: 16,
+  },
   title: {
+    fontSize: 21,
+    fontWeight: '600',
+    color: Colors.dark,
+    textTransform: 'capitalize',
+  },
+  subTitle: {
     fontSize: 16,
     color: Colors.dark,
     fontWeight: '600',
