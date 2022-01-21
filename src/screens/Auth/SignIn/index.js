@@ -1,6 +1,8 @@
-import React, {useRef} from 'react';
+import React, {Fragment, useCallback, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {
+  ActivityIndicator,
+  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
@@ -10,14 +12,35 @@ import {
 } from 'react-native';
 import {Colors} from '../../../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch, useSelector} from 'react-redux';
+import {signIn} from '../../../store/reducers/authSlice';
 
 export default () => {
   const navigation = useNavigation();
 
+  const dispatch = useDispatch();
+
+  const {error, status} = useSelector(state => state.auth);
+
+  const [tryToSend, setTryToSend] = useState(false);
+  const [email, setEmail] = useState('alan@gmail.com');
+  const [senha, setSenha] = useState('123456');
   const inputPasswordRef = useRef();
 
+  const onSubmit = useCallback(() => {
+    setTryToSend(true);
+
+    if (!(email && senha)) return;
+
+    const data = {email, senha};
+
+    dispatch(signIn(data));
+  }, [email, senha]);
+
+  const isLoading = () => status === 'loading';
+
   return (
-    <View style={styles.pageContainer}>
+    <SafeAreaView style={styles.pageContainer}>
       <StatusBar backgroundColor={Colors.light} />
 
       <View style={styles.loginContainer}>
@@ -33,9 +56,14 @@ export default () => {
             placeholder="Digite o seu e-mail"
             keyboardType="email-address"
             returnKeyType="next"
+            onChangeText={setEmail}
+            value={email}
             onSubmitEditing={() => inputPasswordRef.current.focus()}
           />
         </View>
+        {tryToSend && email === '' && (
+          <Text style={styles.textError}>Campo obrigatório</Text>
+        )}
 
         <Text style={styles.textInputLabel}>Senha</Text>
         <View style={styles.textInputContainer}>
@@ -45,18 +73,33 @@ export default () => {
             placeholderTextColor={Colors.gray}
             placeholder="Digite a sua senha"
             secureTextEntry
+            onChangeText={setSenha}
+            value={senha}
             ref={inputPasswordRef}
-            onSubmitEditing={() => navigation.goBack()}
+            onSubmitEditing={onSubmit}
           />
         </View>
+        {tryToSend && senha === '' && (
+          <Text style={styles.textError}>Campo obrigatório</Text>
+        )}
 
         <TouchableOpacity
+          disabled={isLoading()}
           style={styles.button}
           activeOpacity={0.7}
-          onPress={() => navigation.goBack()}>
+          onPress={onSubmit}>
           <Text style={styles.buttonText}>Entrar</Text>
-          <Icon style={styles.buttonIcon} name="arrow-forward" />
+          {isLoading() ? (
+            <ActivityIndicator
+              style={styles.buttonLoading}
+              color={Colors.light}
+            />
+          ) : (
+            <Icon style={styles.buttonIcon} name="arrow-forward" />
+          )}
         </TouchableOpacity>
+
+        <Text style={[styles.textError, {marginTop: 16}]}>{error}</Text>
       </View>
 
       <View style={styles.signUpContainer}>
@@ -68,7 +111,7 @@ export default () => {
           <Text style={styles.textSignUpLink}>Inscreva-se</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -137,6 +180,13 @@ const styles = StyleSheet.create({
     color: Colors.light,
     fontSize: 21,
     marginLeft: 8,
+  },
+  buttonLoading: {
+    marginLeft: 8,
+  },
+  textError: {
+    color: Colors.red,
+    marginTop: 2,
   },
   signUpContainer: {
     flexDirection: 'row',

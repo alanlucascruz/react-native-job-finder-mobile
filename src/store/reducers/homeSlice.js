@@ -14,7 +14,7 @@ export const getJobsRequest = status => async (dispatch, getState) => {
     dispatch(setStatus('succeeded'));
   } catch (error) {
     dispatch(setStatus('failed'));
-    console.error(error); // Verificar NetWork Error e Expiração de Token
+    console.error(error); // Verificar Network Error e Expiração de Token
   }
 };
 

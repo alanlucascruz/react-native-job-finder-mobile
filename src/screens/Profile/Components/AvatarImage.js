@@ -2,8 +2,22 @@ import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../../../styles';
 import LinearGradient from 'react-native-linear-gradient';
+import {useSelector} from 'react-redux';
+import {Config} from '../../../core';
 
 export default () => {
+  const {signedUser: user} = useSelector(state => state.user);
+
+  // const AvatarImage = ({image}) => {
+  //   let source = require('../../../assets/img/no-avatar.png');
+
+  //   if (image) {
+  //     source = {uri: Config.apiURL + image};
+  //   }
+
+  //   return <Image style={styles.avatarImage} source={source} />;
+  // };
+
   return (
     <View>
       <LinearGradient
@@ -15,10 +29,7 @@ export default () => {
       </LinearGradient>
 
       <View style={styles.content}>
-        <Image
-          style={styles.avatarImage}
-          source={require('../../../assets/img/no-avatar.png')}
-        />
+        {/* <AvatarImage image={user.imagem} /> */}
         <Text style={styles.textName}>Alan Cruz</Text>
         <Text style={styles.textEmail}>alanlucascruz@gmail.com</Text>
       </View>

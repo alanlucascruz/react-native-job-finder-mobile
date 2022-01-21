@@ -2,10 +2,14 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch} from 'react-redux';
+import {signOut} from '../../../store/reducers/authSlice';
 import {Colors} from '../../../styles';
 
 export default () => {
   const navigation = useNavigation();
+
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.container}>
@@ -19,7 +23,7 @@ export default () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('SignIn')}
+        onPress={() => dispatch(signOut())}
         activeOpacity={0.6}
         style={[
           styles.button,

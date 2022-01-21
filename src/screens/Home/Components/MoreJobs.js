@@ -1,4 +1,4 @@
-import React, {Fragment, useCallback, useMemo} from 'react';
+import React, {Fragment, memo, useCallback} from 'react';
 import {
   FlatList,
   View,

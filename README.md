@@ -1,6 +1,6 @@
 ## Dependências
 
-> npm i @react-navigation/native react-native-screens react-native-safe-area-context npm install @react-navigation/stack react-native-gesture-handler @react-navigation/bottom-tabs react-native-linear-gradient react-native-vector-icons @reduxjs/toolkit react-redux redux-saga axios
+> npm i @react-navigation/native react-native-screens react-native-safe-area-context npm install @react-navigation/stack react-native-gesture-handler @react-navigation/bottom-tabs react-native-linear-gradient react-native-vector-icons @reduxjs/toolkit react-redux redux-saga axios @react-native-async-storage/async-storage
 
 ## Rodar no Android
 
