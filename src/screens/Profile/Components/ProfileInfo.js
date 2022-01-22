@@ -3,25 +3,28 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../../../styles';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useSelector} from 'react-redux';
 
 export default () => {
+  const {signedUser: user} = useSelector(state => state.user);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Informações</Text>
 
       <View style={styles.item}>
         <MIcon name="work-outline" size={24} color={Colors.dark} />
-        <Text style={styles.itemText}>Desenvolvedor Full Stack</Text>
+        <Text style={styles.itemText}>{user.profissao}</Text>
       </View>
 
       <View style={styles.item}>
         <MCIcon name="whatsapp" size={24} color={Colors.dark} />
-        <Text style={styles.itemText}>(48) 99999-0251</Text>
+        <Text style={styles.itemText}>{user.whatsapp}</Text>
       </View>
 
       <View style={styles.item}>
         <MCIcon name="link" size={24} color={Colors.dark} />
-        <Text style={styles.itemText}>https:\\avancedev.com.br</Text>
+        <Text style={styles.itemText}>{user.link_portfolio}</Text>
       </View>
     </View>
   );

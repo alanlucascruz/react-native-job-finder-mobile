@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,23 +8,42 @@ import {
 } from 'react-native';
 import {Colors} from '../../../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch} from 'react-redux';
+import {getJobsRequest, setFilter} from '../../../store/reducers/jobSlice';
 
-export default () => (
-  <View style={styles.container}>
-    <Text style={styles.title}>Encontre Sua Vaga dos Sonhos</Text>
+export default () => {
+  const [filter, onChangeFilter] = useState('');
 
-    <View style={styles.inputTextContainer}>
-      <TextInput
-        style={styles.textInput}
-        placeholderTextColor={Colors.gray}
-        placeholder="Encontre sua vaga agora"
-      />
-      <TouchableOpacity style={styles.button} activeOpacity={0.7}>
-        <Icon name="search" color={Colors.light} size={28} />
-      </TouchableOpacity>
+  const dispatch = useDispatch();
+
+  const onSearch = () => {
+    dispatch(setFilter(filter));
+    dispatch(getJobsRequest('filtering'));
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Encontre Sua Vaga dos Sonhos</Text>
+
+      <View style={styles.inputTextContainer}>
+        <TextInput
+          style={styles.textInput}
+          placeholderTextColor={Colors.gray}
+          placeholder="Encontre sua vaga agora"
+          onChangeText={onChangeFilter}
+          value={filter}
+          onSubmitEditing={onSearch}
+        />
+        <TouchableOpacity
+          style={styles.button}
+          activeOpacity={0.7}
+          onPress={onSearch}>
+          <Icon name="search" color={Colors.light} size={28} />
+        </TouchableOpacity>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

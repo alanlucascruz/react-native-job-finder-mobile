@@ -23,8 +23,8 @@ export default () => {
   const {error, status} = useSelector(state => state.auth);
 
   const [tryToSend, setTryToSend] = useState(false);
-  const [email, setEmail] = useState('alan@gmail.com');
-  const [senha, setSenha] = useState('123456');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
   const inputPasswordRef = useRef();
 
   const onSubmit = useCallback(() => {

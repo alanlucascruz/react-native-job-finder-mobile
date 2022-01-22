@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
   FlatList,
@@ -7,91 +8,72 @@ import {
   TouchableWithoutFeedback,
   Image,
   TouchableOpacity,
-  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch, useSelector} from 'react-redux';
+import {getJobsRequest} from '../../../store/reducers/jobSlice';
+import {updateFavoriteJobRequest} from '../../../store/reducers/userSlice';
 import {Colors} from '../../../styles';
 import Search from './Search';
 
 const headerComponent = () => <Search />;
 
 export default () => {
-  const [selectedId, setSelectedId] = useState(null);
+  const navigation = useNavigation();
 
-  const [items, setItems] = useState([
-    {
-      id: 1,
+  const dispatch = useDispatch();
 
-      empresa: 'Level Up Self',
-      local: 'Criciúma, SC',
-      vaga: 'Programador Senior Web',
-      salario: 'R$ 3.500,00 - R$ 4.000',
-      descricao:
-        'Procuramos um Programador Senior Web que se destaque e que seja apaixonado por...',
-      favorito: false,
-    },
-    {
-      id: 2,
+  const {data, status} = useSelector(state => state.job);
+  const {signedUser: user} = useSelector(state => state.user);
 
-      empresa: 'Become An Expert',
-      local: 'Criciúma, SC',
-      vaga: 'React Native Developer',
-      salario: 'R$ 4.250,00 - R$ 7.000',
-      descricao:
-        'Procuramos um Programador Senior Web que se destaque e que seja apaixonado por...',
-      favorito: true,
-    },
-    {
-      id: 3,
+  const onRefresh = () => {
+    dispatch(getJobsRequest('refreshing'));
+  };
 
-      empresa: 'One Step Forward',
-      local: 'Criciúma, SC',
-      vaga: 'Back-end Dev Júnior',
-      salario: 'R$ 2.100,00 - R$ 3.000',
-      descricao:
-        'Procuramos um Programador Senior Web que se destaque e que seja apaixonado por...',
-      favorito: false,
-    },
-    {
-      id: 4,
+  const JobImage = ({image}) => {
+    let source = require('../../../assets/img/no-image.png');
 
-      empresa: 'One Step Forward',
-      local: 'Criciúma, SC',
-      vaga: 'Back-end Dev Júnior',
-      salario: 'R$ 2.100,00 - R$ 3.000',
-      descricao:
-        'Procuramos um Programador Senior Web que se destaque e que seja apaixonado por...',
-      favorito: true,
-    },
-  ]);
+    if (image) {
+      source = {uri: Config.apiURL + image};
+    }
 
-  const setFavoriteItem = id => {
-    setItems(
-      items.map(item =>
-        item.id === id ? {...item, favorito: !item.favorito} : item,
-      ),
-    );
+    return <Image style={styles.cardImage} source={source} />;
+  };
+
+  const JobIcon = ({item}) => {
+    const {vagas_favoritas} = user;
+
+    let iconName = 'favorite-outline';
+
+    const found = vagas_favoritas.find(vaga => vaga._id === item._id);
+
+    if (found) {
+      iconName = 'favorite';
+    }
+
+    return <Icon name={iconName} size={21} color={Colors.dark} />;
+  };
+
+  const favoriteJob = job => {
+    dispatch(updateFavoriteJobRequest(job));
   };
 
   const renderItem = ({item}) => {
     return (
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate('Details', {job: item})}>
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            {/* <Image style={styles.cardImage} source={item.imagem} /> */}
+            <JobImage image={item.imagem} />
             <View style={styles.cardTitleContainer}>
-              <Text style={styles.cardTitle}>{item.vaga}</Text>
-              <Text style={styles.cardSubtitle}>{item.empresa}</Text>
+              <Text style={styles.cardTitle}>{item.nome}</Text>
+              <Text style={styles.cardSubtitle}>{item.empresa.nome}</Text>
             </View>
             <TouchableOpacity
-              onPress={() => setFavoriteItem(item.id)}
+              onPress={() => favoriteJob(item)}
               activeOpacity={0.6}
               hitSlop={{top: 10, right: 10, bottom: 10, left: 10}}>
-              <Icon
-                name={item.favorito ? 'favorite' : 'favorite-outline'}
-                size={21}
-                color={Colors.dark}
-              />
+              <JobIcon item={item} />
             </TouchableOpacity>
           </View>
 
@@ -108,10 +90,11 @@ export default () => {
     <View style={styles.container}>
       <FlatList
         ListHeaderComponent={headerComponent}
-        data={items}
+        data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
-        extraData={selectedId}
+        keyExtractor={item => item._id}
+        onRefresh={onRefresh}
+        refreshing={status === 'refreshing'}
       />
     </View>
   );

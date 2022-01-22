@@ -11,11 +11,15 @@ import {Provider, useDispatch, useSelector} from 'react-redux';
 import store from './store';
 import {checkSignedUser} from './store/reducers/authSlice';
 
+import {Loading} from './components';
+
 import SignIn from './screens/Auth/SignIn';
 import SignUp from './screens/Auth/SignUp';
 import TabBar from './screens/TabBar';
 import Details from './screens/Details';
-import {Loading} from './components';
+
+StatusBar.setBackgroundColor('#ffffff');
+StatusBar.setBarStyle('dark-content');
 
 const Stack = createStackNavigator();
 
@@ -54,7 +58,6 @@ const Routes = () => {
 const App = () => {
   return (
     <Provider store={store}>
-      <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
       <Routes />
     </Provider>
   );

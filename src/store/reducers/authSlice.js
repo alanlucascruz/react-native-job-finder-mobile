@@ -33,7 +33,7 @@ export const signIn = data => async dispatch => {
     await AsyncStorage.setItem('@user', JSON.stringify(user));
   } catch (error) {
     dispatch(setStatus('failed'));
-    // dispatch(setError(error.response.data.message));
+    dispatch(setError(error.response.data.message));
   }
 };
 

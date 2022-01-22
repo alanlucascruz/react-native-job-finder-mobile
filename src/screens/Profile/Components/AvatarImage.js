@@ -8,15 +8,15 @@ import {Config} from '../../../core';
 export default () => {
   const {signedUser: user} = useSelector(state => state.user);
 
-  // const AvatarImage = ({image}) => {
-  //   let source = require('../../../assets/img/no-avatar.png');
+  const AvatarImage = ({image}) => {
+    let source = require('../../../assets/img/no-avatar.png');
 
-  //   if (image) {
-  //     source = {uri: Config.apiURL + image};
-  //   }
+    if (image) {
+      source = {uri: Config.apiURL + image};
+    }
 
-  //   return <Image style={styles.avatarImage} source={source} />;
-  // };
+    return <Image style={styles.avatarImage} source={source} />;
+  };
 
   return (
     <View>
@@ -29,9 +29,9 @@ export default () => {
       </LinearGradient>
 
       <View style={styles.content}>
-        {/* <AvatarImage image={user.imagem} /> */}
-        <Text style={styles.textName}>Alan Cruz</Text>
-        <Text style={styles.textEmail}>alanlucascruz@gmail.com</Text>
+        <AvatarImage image={user.imagem} />
+        <Text style={styles.textName}>{user.nome}</Text>
+        <Text style={styles.textEmail}>{user.email}</Text>
       </View>
     </View>
   );

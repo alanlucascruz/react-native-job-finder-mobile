@@ -2,19 +2,23 @@ import {createSlice} from '@reduxjs/toolkit';
 import {Api} from '../../core';
 
 export const getJobsRequest = status => async (dispatch, getState) => {
+  const {filter} = getState().job;
+
   dispatch(setStatus(status));
 
-  const response = await Api.get('/vagas');
+  const route = filter ? `/vagas/find/${filter}` : '/vagas';
+  const response = await Api.get(route);
 
   dispatch(getJobsSuccess(response.data));
   dispatch(setStatus('succeeded'));
 };
 
-export const home = createSlice({
-  name: 'home',
+export const job = createSlice({
+  name: 'job',
   initialState: {
     data: [],
     status: 'loading', // loading, refreshing, succeeded, failed
+    filter: '',
   },
   reducers: {
     getJobsSuccess: (state, action) => {
@@ -23,9 +27,12 @@ export const home = createSlice({
     setStatus: (state, action) => {
       state.status = action.payload;
     },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
   },
 });
 
-export const {getJobsSuccess, setStatus} = home.actions;
+export const {getJobsSuccess, setStatus, setFilter} = job.actions;
 
-export default home.reducer;
+export default job.reducer;

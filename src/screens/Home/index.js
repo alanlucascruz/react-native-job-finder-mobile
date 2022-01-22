@@ -7,9 +7,9 @@ import {getJobsRequest} from '../../store/reducers/homeSlice';
 import {Loading} from '../../components';
 
 export default () => {
-  const dispatch = useDispatch();
-
   const {status} = useSelector(state => state.home);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getJobsRequest('loading'));

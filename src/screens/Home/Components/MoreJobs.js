@@ -13,7 +13,8 @@ import {getJobsRequest} from '../../../store/reducers/homeSlice';
 import {Config} from '../../../core';
 import {Colors} from '../../../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import {useNavigation} from '@react-navigation/native';
+import {updateFavoriteJobRequest} from '../../../store/reducers/userSlice';
 import PopularJobs from './PopularJobs';
 
 const headerComponent = () => (
@@ -30,9 +31,12 @@ const headerComponent = () => (
 );
 
 export default () => {
+  const navigation = useNavigation();
+
   const dispatch = useDispatch();
 
   const {data, status} = useSelector(state => state.home);
+  const {signedUser: user} = useSelector(state => state.user);
 
   const dataFiltered = data.slice(4);
 
@@ -50,9 +54,28 @@ export default () => {
     return <Image style={styles.cardImage} source={source} />;
   };
 
+  const JobIcon = ({item}) => {
+    const {vagas_favoritas} = user;
+
+    let iconName = 'favorite-outline';
+
+    const found = vagas_favoritas.find(vaga => vaga._id === item._id);
+
+    if (found) {
+      iconName = 'favorite';
+    }
+
+    return <Icon name={iconName} size={21} color={Colors.dark} />;
+  };
+
+  const favoriteJob = job => {
+    dispatch(updateFavoriteJobRequest(job));
+  };
+
   const renderItem = ({item}) => {
     return (
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate('Details', {job: item})}>
         <View style={styles.card}>
           <JobImage image={item.imagem} />
           <View style={styles.cardTitleContainer}>
@@ -60,14 +83,10 @@ export default () => {
             <Text style={styles.cardSubtitle}>{item.empresa.nome}</Text>
           </View>
           <TouchableOpacity
+            onPress={() => favoriteJob(item)}
             activeOpacity={0.6}
             hitSlop={{top: 10, right: 10, bottom: 10, left: 10}}>
-            <Icon
-              // name={item.favorito ? 'favorite' : 'favorite-outline'}
-              name="favorite-outline"
-              size={21}
-              color={Colors.dark}
-            />
+            <JobIcon item={item} />
           </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>

@@ -1,6 +1,8 @@
 import React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
+
 import {Colors} from '../../styles';
+
 import CompanyImage from './Components/CompanyImage';
 import JobDetails from './Components/JobDetails';
 

@@ -1,12 +1,49 @@
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Colors} from '../../../styles';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch, useSelector} from 'react-redux';
+import {updateFavoriteJobRequest} from '../../../store/reducers/userSlice';
 
 export default () => {
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const dispatch = useDispatch();
+
+  const {job} = route.params;
+
+  const {signedUser: user} = useSelector(state => state.user);
+
+  const JobImage = ({image}) => {
+    let source = require('../../../assets/img/no-image.png');
+
+    if (image) {
+      source = {uri: Config.apiURL + image};
+    }
+
+    return <Image style={styles.avatarImage} source={source} />;
+  };
+
+  const JobIcon = ({job}) => {
+    const {vagas_favoritas} = user;
+
+    let iconName = 'favorite-outline';
+
+    const found = vagas_favoritas.find(vaga => vaga._id === job._id);
+
+    if (found) {
+      iconName = 'favorite';
+    }
+
+    return <Icon name={iconName} size={21} color={Colors.light} />;
+  };
+
+  const favoriteJob = job => {
+    dispatch(updateFavoriteJobRequest(job));
+  };
 
   return (
     <View>
@@ -22,19 +59,19 @@ export default () => {
           <Icon name="arrow-back" size={21} color={Colors.light} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} activeOpacity={0.6}>
-          <Icon name="favorite-outline" size={21} color={Colors.light} />
+        <TouchableOpacity
+          style={styles.button}
+          activeOpacity={0.6}
+          onPress={() => favoriteJob(job)}>
+          <JobIcon job={job} />
         </TouchableOpacity>
       </LinearGradient>
 
       <View style={styles.content}>
-        {/* <Image
-          style={styles.avatarImage}
-          source={require('../../../assets/img/logo-1.png')}
-        /> */}
-        <Text style={styles.title}>Programador Senior Web</Text>
+        <JobImage image={job.imagem} />
+        <Text style={styles.title}>{job.nome}</Text>
         <View style={styles.subtitleContainer}>
-          <Text style={styles.subtitleJob}>Level Up Self</Text>
+          <Text style={styles.subtitleJob}>{job.empresa.nome}</Text>
           <Text style={styles.subtitleSeparator}>•</Text>
           <Icon
             style={styles.subtitleIcon}
@@ -42,7 +79,7 @@ export default () => {
             size={18}
             color={Colors.gray}
           />
-          <Text style={styles.subtitleLocation}>Criciúma, SC</Text>
+          <Text style={styles.subtitleLocation}>{job.empresa.localizacao}</Text>
         </View>
       </View>
     </View>
