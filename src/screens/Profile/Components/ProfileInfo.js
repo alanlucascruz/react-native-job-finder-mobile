@@ -1,12 +1,21 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Linking} from 'react-native';
 import {Colors} from '../../../styles';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default () => {
   const {signedUser: user} = useSelector(state => state.user);
+
+  const openWhatsapp = whatsapp => {
+    const onlyNumbers = whatsapp.replace(/[^\d]/g, '');
+
+    Linking.openURL(`https://wa.me/55${onlyNumbers}`);
+  };
+
+  const openLink = link => Linking.openURL(link);
 
   return (
     <View style={styles.container}>
@@ -17,15 +26,23 @@ export default () => {
         <Text style={styles.itemText}>{user.profissao}</Text>
       </View>
 
-      <View style={styles.item}>
+      <TouchableOpacity
+        style={styles.item}
+        activeOpacity={0.6}
+        onPress={() => openWhatsapp(user.whatsapp)}>
         <MCIcon name="whatsapp" size={24} color={Colors.dark} />
         <Text style={styles.itemText}>{user.whatsapp}</Text>
-      </View>
+        <MCIcon name="open-in-new" size={16} color={Colors.dark} />
+      </TouchableOpacity>
 
-      <View style={styles.item}>
+      <TouchableOpacity
+        style={styles.item}
+        activeOpacity={0.6}
+        onPress={() => openLink(user.link_portfolio)}>
         <MCIcon name="link" size={24} color={Colors.dark} />
         <Text style={styles.itemText}>{user.link_portfolio}</Text>
-      </View>
+        <MCIcon name="open-in-new" size={16} color={Colors.dark} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -49,5 +66,6 @@ const styles = StyleSheet.create({
   itemText: {
     color: Colors.dark,
     marginLeft: 16,
+    marginRight: 4,
   },
 });
