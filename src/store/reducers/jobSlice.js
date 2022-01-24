@@ -13,6 +13,10 @@ export const getJobsRequest = status => async (dispatch, getState) => {
   dispatch(setStatus('succeeded'));
 };
 
+export const updateJobAccessRequest = id => async () => {
+  await Api.put(`/vagas/update-acessos/${id}`);
+};
+
 export const job = createSlice({
   name: 'job',
   initialState: {
