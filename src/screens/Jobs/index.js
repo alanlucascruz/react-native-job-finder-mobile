@@ -7,7 +7,7 @@ import {Colors} from '../../styles';
 import JobsList from './Components/JobsList';
 
 export default () => {
-  const {status} = useSelector(state => state.home);
+  const {status} = useSelector(state => state.job);
 
   const dispatch = useDispatch();
 

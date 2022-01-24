@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
+import {Config} from '../../../core';
 import {getJobsRequest} from '../../../store/reducers/jobSlice';
 import {updateFavoriteJobRequest} from '../../../store/reducers/userSlice';
 import {Colors} from '../../../styles';

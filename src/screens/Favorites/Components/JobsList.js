@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React from 'react';
 import {
   FlatList,
   View,
@@ -9,72 +10,48 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch, useSelector} from 'react-redux';
+import {Config} from '../../../core';
+import {updateFavoriteJobRequest} from '../../../store/reducers/userSlice';
 import {Colors} from '../../../styles';
 
 const headerComponent = () => <Text style={styles.title}>Favoritos</Text>;
 
 export default () => {
-  const [selectedId, setSelectedId] = useState(null);
+  const navigation = useNavigation();
 
-  const [items, setItems] = useState([
-    {
-      id: 1,
+  const {signedUser: user} = useSelector(state => state.user);
+  const {vagas_favoritas: data} = user;
 
-      empresa: 'Level Up Self',
-      local: 'Criciúma, SC',
-      vaga: 'Programador Senior Web',
-      salario: 'R$ 3.500,00 - R$ 4.000',
-      descricao:
-        'Procuramos um Programador Senior Web que se destaque e que seja apaixonado por...',
-    },
-    {
-      id: 2,
+  const dispatch = useDispatch();
 
-      empresa: 'Become An Expert',
-      local: 'Criciúma, SC',
-      vaga: 'React Native Developer',
-      salario: 'R$ 4.250,00 - R$ 7.000',
-      descricao:
-        'Procuramos um Programador Senior Web que se destaque e que seja apaixonado por...',
-    },
-    {
-      id: 3,
+  const favoriteJob = job => {
+    dispatch(updateFavoriteJobRequest(job));
+  };
 
-      empresa: 'One Step Forward',
-      local: 'Criciúma, SC',
-      vaga: 'Back-end Dev Júnior',
-      salario: 'R$ 2.100,00 - R$ 3.000',
-      descricao:
-        'Procuramos um Programador Senior Web que se destaque e que seja apaixonado por...',
-    },
-    {
-      id: 4,
+  const JobImage = ({image}) => {
+    let source = require('../../../assets/img/no-image.png');
 
-      empresa: 'One Step Forward',
-      local: 'Criciúma, SC',
-      vaga: 'Back-end Dev Júnior',
-      salario: 'R$ 2.100,00 - R$ 3.000',
-      descricao:
-        'Procuramos um Programador Senior Web que se destaque e que seja apaixonado por...',
-    },
-  ]);
+    if (image) {
+      source = {uri: Config.apiURL + image};
+    }
 
-  const removeFavoriteItem = id => {
-    setItems(items.filter(item => item.id !== id));
+    return <Image style={styles.cardImage} source={source} />;
   };
 
   const renderItem = ({item}) => {
     return (
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate('Details', {job: item})}>
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            {/* <Image style={styles.cardImage} source={item.imagem} /> */}
+            <JobImage image={item.imagem} />
             <View style={styles.cardTitleContainer}>
-              <Text style={styles.cardTitle}>{item.vaga}</Text>
-              <Text style={styles.cardSubtitle}>{item.empresa}</Text>
+              <Text style={styles.cardTitle}>{item.nome}</Text>
+              <Text style={styles.cardSubtitle}>{item.empresa.nome}</Text>
             </View>
             <TouchableOpacity
-              onPress={() => removeFavoriteItem(item.id)}
+              onPress={() => favoriteJob(item)}
               activeOpacity={0.6}
               hitSlop={{top: 10, right: 10, bottom: 10, left: 10}}>
               <Icon name="favorite" size={21} color={Colors.dark} />
@@ -94,10 +71,9 @@ export default () => {
     <View style={styles.container}>
       <FlatList
         ListHeaderComponent={headerComponent}
-        data={items}
+        data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
-        extraData={selectedId}
+        keyExtractor={item => item._id}
       />
     </View>
   );

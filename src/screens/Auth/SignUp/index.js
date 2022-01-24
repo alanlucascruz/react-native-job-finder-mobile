@@ -87,6 +87,7 @@ export default () => {
           placeholder="Digite o seu e-mail"
           keyboardType="email-address"
           returnKeyType="next"
+          autoCapitalize="none"
           ref={inputEmailRef}
           onSubmitEditing={() => inputSenhaRef.current.focus()}
         />

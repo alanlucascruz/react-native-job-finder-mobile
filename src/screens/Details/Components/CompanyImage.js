@@ -6,6 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {updateFavoriteJobRequest} from '../../../store/reducers/userSlice';
+import {Config} from '../../../core';
 
 export default () => {
   const navigation = useNavigation();
@@ -116,6 +117,7 @@ const styles = StyleSheet.create({
     width: 88,
     marginTop: -56,
     borderRadius: 16,
+    backgroundColor: Colors.lightGray,
   },
   title: {
     marginTop: 16,
