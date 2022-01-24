@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React from 'react';
 import {
   FlatList,
   View,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
+import {NotFound} from '../../../components';
 import {Config} from '../../../core';
 import {getJobsRequest} from '../../../store/reducers/jobSlice';
 import {updateFavoriteJobRequest} from '../../../store/reducers/userSlice';
@@ -18,6 +19,13 @@ import {Colors} from '../../../styles';
 import Search from './Search';
 
 const headerComponent = () => <Search />;
+
+const ListEmptyComponent = () => (
+  <NotFound
+    message="A pesquisa não retornou resultados."
+    imageSrc={require('../../../assets/img/not-found.png')}
+  />
+);
 
 export default () => {
   const navigation = useNavigation();
@@ -91,6 +99,7 @@ export default () => {
     <View style={styles.container}>
       <FlatList
         ListHeaderComponent={headerComponent}
+        ListEmptyComponent={ListEmptyComponent}
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item._id}

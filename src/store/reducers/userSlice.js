@@ -3,13 +3,13 @@ import {Api} from '../../core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const updateFavoriteJobRequest = job => async (dispatch, getState) => {
+  await Api.put('/usuarios/favoritar-vaga', {vaga_id: job._id});
+
   dispatch(updateFavoriteJobSuccess(job));
 
   const {signedUser: user} = getState().user;
 
   await AsyncStorage.setItem('@user', JSON.stringify(user));
-
-  await Api.put('/usuarios/favoritar-vaga', {vaga_id: job._id});
 };
 
 export const user = createSlice({

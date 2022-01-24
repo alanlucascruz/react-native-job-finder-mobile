@@ -11,11 +11,19 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
+import {NotFound} from '../../../components';
 import {Config} from '../../../core';
 import {updateFavoriteJobRequest} from '../../../store/reducers/userSlice';
 import {Colors} from '../../../styles';
 
 const headerComponent = () => <Text style={styles.title}>Favoritos</Text>;
+
+const ListEmptyComponent = () => (
+  <NotFound
+    message={'Seus itens favoritos aparecerão aqui.'}
+    imageSrc={require('../../../assets/img/not-found-2.png')}
+  />
+);
 
 export default () => {
   const navigation = useNavigation();
@@ -71,6 +79,7 @@ export default () => {
     <View style={styles.container}>
       <FlatList
         ListHeaderComponent={headerComponent}
+        ListEmptyComponent={ListEmptyComponent}
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item._id}
