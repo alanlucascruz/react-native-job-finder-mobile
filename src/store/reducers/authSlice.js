@@ -37,6 +37,26 @@ export const signIn = data => async dispatch => {
   }
 };
 
+export const signUp = data => async dispatch => {
+  try {
+    dispatch(setError(''));
+    dispatch(setStatus('loading'));
+
+    const response = await Api.post('/auth/signup', data);
+    const user = response.data;
+
+    dispatch(setToken(user.token));
+    dispatch(setSignedUser(user));
+    dispatch(setStatus('succeeded'));
+
+    await AsyncStorage.setItem('@token', user.token);
+    await AsyncStorage.setItem('@user', JSON.stringify(user));
+  } catch (error) {
+    dispatch(setStatus('failed'));
+    dispatch(setError(error.response.data.message));
+  }
+};
+
 export const signOut = () => async dispatch => {
   await AsyncStorage.clear();
 

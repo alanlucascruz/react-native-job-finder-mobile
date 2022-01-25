@@ -17,10 +17,10 @@ import {useNavigation} from '@react-navigation/native';
 import {updateFavoriteJobRequest} from '../../../store/reducers/userSlice';
 import PopularJobs from './PopularJobs';
 
-const headerComponent = () => (
+const headerComponent = name => (
   <Fragment>
     <View style={styles.titleContainer}>
-      <Text style={styles.title}>Olá Alan,</Text>
+      <Text style={styles.title}>Olá {name.split(' ', 1).join()},</Text>
       <Text style={styles.title}>Inicie sua nova jornada</Text>
     </View>
 
@@ -96,7 +96,7 @@ export default () => {
   return (
     <View style={styles.container}>
       <FlatList
-        ListHeaderComponent={headerComponent}
+        ListHeaderComponent={() => headerComponent(user.nome)}
         data={dataFiltered}
         renderItem={renderItem}
         keyExtractor={item => item._id}

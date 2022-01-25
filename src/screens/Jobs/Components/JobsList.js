@@ -98,6 +98,7 @@ export default () => {
   return (
     <View style={styles.container}>
       <FlatList
+        disableScrollViewPanResponder={true}
         ListHeaderComponent={headerComponent}
         ListEmptyComponent={ListEmptyComponent}
         data={data}

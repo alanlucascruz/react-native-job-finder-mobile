@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   TextInput,
@@ -8,13 +9,17 @@ import {
 } from 'react-native';
 import {Colors} from '../../../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getJobsRequest, setFilter} from '../../../store/reducers/jobSlice';
 
 export default () => {
   const [filter, onChangeFilter] = useState('');
 
+  const {status} = useSelector(state => state.job);
+
   const dispatch = useDispatch();
+
+  const isFiltering = () => status === 'filtering';
 
   const onSearch = () => {
     dispatch(setFilter(filter));
@@ -35,10 +40,18 @@ export default () => {
           onSubmitEditing={onSearch}
         />
         <TouchableOpacity
+          disabled={isFiltering()}
           style={styles.button}
           activeOpacity={0.7}
           onPress={onSearch}>
-          <Icon name="search" color={Colors.light} size={28} />
+          {isFiltering() ? (
+            <ActivityIndicator
+              style={styles.buttonLoading}
+              color={Colors.light}
+            />
+          ) : (
+            <Icon name="search" color={Colors.light} size={28} />
+          )}
         </TouchableOpacity>
       </View>
     </View>
