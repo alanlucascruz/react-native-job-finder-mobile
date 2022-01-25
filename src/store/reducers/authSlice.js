@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {Api} from '../../core';
+import {Api, Navigation} from '../../core';
 import {setSignedUser} from './userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -51,6 +51,21 @@ export const signUp = data => async dispatch => {
 
     await AsyncStorage.setItem('@token', user.token);
     await AsyncStorage.setItem('@user', JSON.stringify(user));
+  } catch (error) {
+    dispatch(setStatus('failed'));
+    dispatch(setError(error.response.data.message));
+  }
+};
+
+export const updatePassword = data => async dispatch => {
+  try {
+    dispatch(setError(''));
+    dispatch(setStatus('loading'));
+
+    await Api.put('/auth/update-password', data);
+
+    dispatch(setStatus('succeeded'));
+    Navigation.navigate('TabBar');
   } catch (error) {
     dispatch(setStatus('failed'));
     dispatch(setError(error.response.data.message));

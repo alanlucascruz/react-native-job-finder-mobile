@@ -11,10 +11,10 @@ import {
 } from 'react-native';
 import {TextInputMask} from 'react-native-masked-text';
 import {useDispatch, useSelector} from 'react-redux';
+import {signUp} from '../../../store/reducers/authSlice';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Colors} from '../../../styles';
-import {signUp} from '../../../store/reducers/authSlice';
 
 export default () => {
   const navigation = useNavigation();
@@ -33,7 +33,7 @@ export default () => {
   const inputLinkRef = useRef();
   const inputEmailRef = useRef();
   const inputSenhaRef = useRef();
-  const inputConfirmSenhaRef = useRef();
+  const inputConfirmacaoSenhaRef = useRef();
 
   const {status, error} = useSelector(state => state.auth);
 
@@ -180,7 +180,7 @@ export default () => {
           onChangeText={setSenha}
           value={senha}
           ref={inputSenhaRef}
-          onSubmitEditing={() => inputConfirmSenhaRef.current.focus()}
+          onSubmitEditing={() => inputConfirmacaoSenhaRef.current.focus()}
         />
       </View>
       {tryToSend && senha === '' && (
@@ -197,7 +197,7 @@ export default () => {
           secureTextEntry
           onChangeText={setConfirmacao_senha}
           value={confirmacao_senha}
-          ref={inputConfirmSenhaRef}
+          ref={inputConfirmacaoSenhaRef}
           onSubmitEditing={onSubmit}
         />
       </View>

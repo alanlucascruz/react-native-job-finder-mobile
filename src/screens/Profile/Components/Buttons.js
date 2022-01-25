@@ -14,6 +14,7 @@ export default () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
+        onPress={() => navigation.navigate('UpdatePassword')}
         activeOpacity={0.6}
         style={[styles.button, {backgroundColor: Colors.dark}]}>
         <Icon name="lock-outline" size={18} color={Colors.light} />

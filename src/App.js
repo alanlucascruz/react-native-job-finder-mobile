@@ -15,6 +15,8 @@ import {Loading} from './components';
 
 import SignIn from './screens/Auth/SignIn';
 import SignUp from './screens/Auth/SignUp';
+import UpdatePassword from './screens/Auth/UpdatePassword';
+
 import TabBar from './screens/TabBar';
 import Details from './screens/Details';
 
@@ -48,6 +50,7 @@ const Routes = () => {
           <Stack.Group>
             <Stack.Screen name="TabBar" component={TabBar} />
             <Stack.Screen name="Details" component={Details} />
+            <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
           </Stack.Group>
         )}
       </Stack.Navigator>
