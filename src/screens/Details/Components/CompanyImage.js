@@ -1,5 +1,12 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Vibration,
+  View,
+} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Colors} from '../../../styles';
 import LinearGradient from 'react-native-linear-gradient';
@@ -43,6 +50,8 @@ export default () => {
   };
 
   const favoriteJob = job => {
+    Vibration.vibrate(10);
+
     dispatch(updateFavoriteJobRequest(job));
   };
 

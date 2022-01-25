@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Image,
+  Vibration,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getJobsRequest} from '../../../store/reducers/homeSlice';
@@ -69,6 +70,8 @@ export default () => {
   };
 
   const favoriteJob = job => {
+    Vibration.vibrate(10);
+
     dispatch(updateFavoriteJobRequest(job));
   };
 

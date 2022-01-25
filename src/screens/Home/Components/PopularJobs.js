@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  Vibration,
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -50,6 +51,8 @@ export default () => {
   };
 
   const favoriteJob = job => {
+    Vibration.vibrate(10);
+
     dispatch(updateFavoriteJobRequest(job));
   };
 

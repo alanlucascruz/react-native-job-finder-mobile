@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Image,
   TouchableOpacity,
+  Vibration,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
@@ -64,6 +65,8 @@ export default () => {
   };
 
   const favoriteJob = job => {
+    Vibration.vibrate(10);
+
     dispatch(updateFavoriteJobRequest(job));
   };
 
