@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   image: {
-    backgroundColor: Colors.lightGray,
     height: 200,
     width: 200,
   },
