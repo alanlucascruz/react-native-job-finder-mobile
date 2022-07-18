@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -6,21 +6,44 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {Colors} from '../../../styles';
 import LinearGradient from 'react-native-linear-gradient';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Config} from '../../../core';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {uploadImage} from '../../../store/reducers/userSlice';
 
 export default () => {
   const {signedUser: user} = useSelector(state => state.user);
+
+  const dispatch = useDispatch();
+
+  const [photo, setPhoto] = useState(null);
+
+  const onChoosePhoto = async () => {
+    const response = await launchImageLibrary({mediaType: 'photo'});
+
+    if (response.didCancel) return;
+
+    const onlyFirstPhoto = response.assets[0];
+
+    setPhoto(onlyFirstPhoto);
+
+    dispatch(uploadImage(onlyFirstPhoto));
+  };
 
   const AvatarImage = ({image}) => {
     let source = require('../../../assets/img/no-avatar.png');
 
     if (image) {
       source = {uri: Config.apiURL + image};
+    }
+
+    if (photo) {
+      source = {uri: photo.uri};
     }
 
     return <Image style={styles.avatarImage} source={source} />;
@@ -40,6 +63,7 @@ export default () => {
         <AvatarImage image={user.imagem} />
 
         <TouchableOpacity
+          // onPress={onChoosePhoto}
           style={styles.buttonImage}
           activeOpacity={0.6}
           hitSlop={{top: 10, right: 10, bottom: 10, left: 10}}>

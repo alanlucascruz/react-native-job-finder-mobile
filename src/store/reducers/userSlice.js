@@ -12,6 +12,24 @@ export const updateFavoriteJobRequest = job => async (dispatch, getState) => {
   await AsyncStorage.setItem('@user', JSON.stringify(user));
 };
 
+export const uploadImage = imagem => async dispatch => {
+  try {
+    // const formData = new FormData();
+    // formData.append('imagem', {
+    //   name: imagem.fileName,
+    //   type: imagem.type,
+    //   uri: imagem.uri,
+    // });
+    // const response = await Api.put('/usuarios/upload-image', formData, {
+    //   headers: {'Content-Type': 'multipart/form-data'},
+    // });
+    // dispatch(setSignedUser(response.data));
+    // await AsyncStorage.setItem('@user', JSON.stringify(user));
+  } catch (error) {
+    console.error(error.response.data.message);
+  }
+};
+
 export const user = createSlice({
   name: 'user',
   initialState: {

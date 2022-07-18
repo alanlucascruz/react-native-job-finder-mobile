@@ -53,6 +53,7 @@ export default () => {
   return (
     <SafeAreaView style={styles.container}>
       <Tab.Navigator
+        initialRouteName="Home"
         tabBar={props => <TabBar {...props} />}
         screenOptions={{
           headerShown: false,

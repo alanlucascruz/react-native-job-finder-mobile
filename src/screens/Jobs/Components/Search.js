@@ -40,15 +40,12 @@ export default () => {
           onSubmitEditing={onSearch}
         />
         <TouchableOpacity
-          disabled={isFiltering()}
           style={styles.button}
           activeOpacity={0.7}
+          disabled={isFiltering()}
           onPress={onSearch}>
           {isFiltering() ? (
-            <ActivityIndicator
-              style={styles.buttonLoading}
-              color={Colors.light}
-            />
+            <ActivityIndicator color={Colors.light} />
           ) : (
             <Icon name="search" color={Colors.light} size={28} />
           )}

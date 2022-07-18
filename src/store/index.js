@@ -11,4 +11,9 @@ export default configureStore({
     home,
     job,
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      immutableCheck: false,
+      serializableCheck: false,
+    }),
 });
